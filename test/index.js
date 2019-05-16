@@ -19,9 +19,15 @@ app.use(express.static('web/public', { index: "login.html" }))
 
 // API
 app.post("/api/register", function(req, res) {
-  console.log(req.body);
+  db.run("INSERT INTO users(firstname, lastname, email, password) VALUES(?, ?, ?, ?)",
+         [req.body.firstname, req.body.lastname, req.body.email, req.body.password],
+         (err) => {
+    if (err) {
+      res.redirect('/error.html');
+    } else {
+      res.redirect('/login.html');
+    }
+  });
 });
 
 app.listen(port, () => console.log(`Ployster is running on port ${port}!`));
-
-db.close();
