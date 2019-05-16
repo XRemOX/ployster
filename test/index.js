@@ -30,4 +30,16 @@ app.post("/api/register", function(req, res) {
   });
 });
 
+app.post("/api/login", function(req, res) {
+  db.get("SELECT id FROM users WHERE email=? AND password=?",
+         [req.body.email, req.body.password],
+         (err, row) => {
+     if (err || !row) {
+       res.redirect('/error.html');
+     } else {
+       res.redirect('/index.html');
+     }
+   });
+});
+
 app.listen(port, () => console.log(`Ployster is running on port ${port}!`));
